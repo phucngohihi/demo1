@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerShootingg : MonoBehaviour
+public class PlayerShooting : MonoBehaviour
 {
-    public GameObject bulletPrefabs;
-    public float shootingInterval;
+    public GameObject bulletPrefab;
+    public float shootingInterval = 0.1f;
+    public Vector3 bulletOffset; // Thêm biến này để chỉnh vị trí
     private float lastBulletTime;
+
     void Update()
     {
         if (Input.GetMouseButton(0))
         {
-            if (Time.time - lastBulletTime >
-            shootingInterval)
+            if (Time.time - lastBulletTime > shootingInterval)
             {
                 ShootBullet();
                 lastBulletTime = Time.time;
@@ -20,8 +19,12 @@ public class PlayerShootingg : MonoBehaviour
         }
     }
 
-    private void ShootBullet()
+    void ShootBullet()
     {
-        Instantiate(bulletPrefabs, transform.position, transform.rotation);
+        if (bulletPrefab != null)
+        {
+            // Cộng thêm bulletOffset vào vị trí hiện tại
+            Instantiate(bulletPrefab, transform.position + bulletOffset, transform.rotation);
+        }
     }
 }
