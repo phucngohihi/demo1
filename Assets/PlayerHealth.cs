@@ -1,14 +1,26 @@
 ﻿using UnityEngine;
 
-public class PlayerHealth : Health
+public class PlayerHealth : MonoBehaviour
 {
-    protected override void Die()
+    public float health = 3f;
+
+    public void TakeDamage(float damage)
     {
-        base.Die();
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
 
-        // Tìm ông GameManager và bảo ông ấy hiện bảng Game Over lên
-        FindObjectOfType<GameManager>().ShowGameOver();
-
-        Debug.Log("Player died");
+    void Die()
+    {
+        Destroy(gameObject);
+        // Tìm ông Trọng tài để báo Game Over
+        BattleFlow flow = Object.FindAnyObjectByType<BattleFlow>();
+        if (flow != null)
+        {
+            flow.OnGameOver();
+        }
     }
 }
